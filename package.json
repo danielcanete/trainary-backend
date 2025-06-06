@@ -11,6 +11,8 @@
     "db:push": "npx drizzle-kit push"
   },
   "dependencies": {
+    "@clerk/express": "^1.6.0",
+    "@neondatabase/serverless": "^1.0.1",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.44.2",
     "express": "^5.1.0",
