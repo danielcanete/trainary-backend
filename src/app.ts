@@ -1,10 +1,10 @@
 import { clerkClient, getAuth, requireAuth } from '@clerk/express';
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
+import { OPEN_ROUTER_CONFIG } from './services/openrouter/config';
 
 const PORT = process.env.PORT || 5002;
 const API_URL = process.env.API_URL || '';
-const OPEN_ROUTER_API_KEY = process.env.OPEN_ROUTER_API_KEY || '';
 
 const app = express();
 app.use(express.json());
@@ -26,7 +26,7 @@ app.get('/protected', requireAuth(), async (req: Request, res: Response) => {
 app.post('/api/chat', async (req: Request, res: Response) => {
   const { messages } = req.body;
 
-  if (!OPEN_ROUTER_API_KEY) {
+  if (!OPEN_ROUTER_CONFIG.TOKEN) {
     return res.status(500).json({ error: 'API key is not set' });
   }
 
@@ -35,14 +35,14 @@ app.post('/api/chat', async (req: Request, res: Response) => {
   }
 
   try {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch(OPEN_ROUTER_CONFIG.API_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPEN_ROUTER_API_KEY}`,
+        'Authorization': `Bearer ${OPEN_ROUTER_CONFIG.TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemma-3-1b-it:free',
+        model: OPEN_ROUTER_CONFIG.MODEL_NAME,
         messages,
       }),
     });
