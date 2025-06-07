@@ -1,5 +1,5 @@
-import { addRoutine, getAllRoutines } from '@/controller/routineController';
 import express from 'express';
+import { addRoutine, getAllRoutines } from '../../controller/routineController';
 
 const router = express.Router();
 

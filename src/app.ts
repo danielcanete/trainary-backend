@@ -1,7 +1,6 @@
 import { requireAuth } from '@clerk/express';
 import 'dotenv/config';
 import express from 'express';
-import 'module-alias/register';
 import { rootController } from './controller/rootController';
 import apiV1Router from './routes/v1';
 
