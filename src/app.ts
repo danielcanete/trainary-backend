@@ -11,7 +11,6 @@ app.use(express.json());
 
 app.get('/protected', requireAuth(), async (req: Request, res: Response) => {
   const { userId } = getAuth(req);
-
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
   try {

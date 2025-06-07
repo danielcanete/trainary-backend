@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
-    "dev": "tsx src/app.ts",
+    "dev": "nodemon --watch src/**/*.ts --exec tsx src/app.ts",
     "db:studio": "npx drizzle-kit studio",
     "db:push": "npx drizzle-kit push"
   },
