@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "A backend application using Express, Clerk for authentication, and Drizzle for database management.",
   "main": "dist/app.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
