@@ -1,6 +1,6 @@
+import { clerkClient, getAuth, requireAuth } from '@clerk/express';
 import 'dotenv/config';
-import express from 'express';
-import { clerkClient, requireAuth, getAuth } from '@clerk/express';
+import express, { Request, Response } from 'express';
 
 const PORT = process.env.PORT || 5002;
 const API_URL = process.env.API_URL || '';
@@ -9,18 +9,21 @@ const OPEN_ROUTER_API_KEY = process.env.OPEN_ROUTER_API_KEY || '';
 const app = express();
 app.use(express.json());
 
-app.get('/protected', requireAuth(), async (req, res) => {
-  // Use `getAuth()` to get the user's `userId`
-  const { userId } = getAuth(req)
+app.get('/protected', requireAuth(), async (req: Request, res: Response) => {
+  const { userId } = getAuth(req);
 
-  // Use Clerk's JavaScript Backend SDK to get the user's User object
-  const user = await clerkClient.users.getUser(userId)
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-  return res.json({ user })
-})
+  try {
+    const user = await clerkClient.users.getUser(userId);
+    return res.json({ user });
+  } catch (err) {
+    console.error('Error fetching user:', err);
+    return res.status(500).json({ error: 'Error fetching user info' });
+  }
+});
 
-
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', async (req: Request, res: Response) => {
   const { messages } = req.body;
 
   if (!OPEN_ROUTER_API_KEY) {
@@ -57,6 +60,6 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${API_URL}:${PORT}`);
+app.listen(Number(PORT), () => {
+  console.log(`Server is running on ${API_URL}:${PORT}`);
 });
