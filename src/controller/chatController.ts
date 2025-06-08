@@ -15,31 +15,34 @@ export const sendMessage = async (req: Request, res: Response) => {
 
   const finalMessages = [CHAT.SYSTEM_PROMPT, ...messages];
 
-  try {
-    const response = await fetch(OPEN_ROUTER_CONFIG.API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPEN_ROUTER_CONFIG.TOKEN}`,
-        "HTTP-Referer": OPEN_ROUTER_CONFIG.HTTP_REFERER,
-        "X-Title": OPEN_ROUTER_CONFIG.X_TITLE,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: OPEN_ROUTER_CONFIG.MODEL_NAME,
-        messages: finalMessages,
-        // "response_format": { "type": "json_object" }
-      }),
-    });
+  // try {
+  //   const response = await fetch(OPEN_ROUTER_CONFIG.API_URL, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Authorization': `Bearer ${OPEN_ROUTER_CONFIG.TOKEN}`,
+  //       "HTTP-Referer": OPEN_ROUTER_CONFIG.HTTP_REFERER,
+  //       "X-Title": OPEN_ROUTER_CONFIG.X_TITLE,
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       model: OPEN_ROUTER_CONFIG.MODEL_NAME,
+  //       messages: finalMessages,
+  //       "response_format": { "type": "json_object" }
+  //     }),
+  //   });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(response.status).json({ error: errorText });
-    }
+  //   if (!response.ok) {
+  //     const errorText = await response.text();
+  //     return res.status(response.status).json({ error: errorText });
+  //   }
 
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    console.error('Fetch error:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+  //   const data = await response.json();
+  //   res.json(data);
+  // } catch (err) {
+  //   console.error('Fetch error:', err);
+  //   res.status(500).json({ error: 'Internal server error' });
+  // }
+
+
+
 };
