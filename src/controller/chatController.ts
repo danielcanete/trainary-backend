@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
 import { CHAT } from '../modules/chat/constants/chatConstants';
 import { OPEN_ROUTER_CONFIG } from '../services/openrouter/config';
+import { getAuth } from '@clerk/express';
+import { saveChat } from '../services/upstash';
 
 export const sendMessage = async (req: Request, res: Response) => {
+  console.log('>> sendMessage called with body:');
   const { messages } = req.body;
 
   if (!OPEN_ROUTER_CONFIG.TOKEN) {
@@ -13,7 +16,18 @@ export const sendMessage = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Missing or invalid "messages" array' });
   }
 
+  const { userId } = getAuth(req)
+
+  if(!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   const finalMessages = [CHAT.SYSTEM_PROMPT, ...messages];
+
+  console.log('>> User ID:', userId);
+  console.log('>> Final messages:', finalMessages);
+
+  await saveChat(userId, finalMessages)
 
   // try {
   //   const response = await fetch(OPEN_ROUTER_CONFIG.API_URL, {
