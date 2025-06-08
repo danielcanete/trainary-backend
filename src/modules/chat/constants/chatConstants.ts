@@ -1,7 +1,13 @@
 export const CHAT = {
-    SYSTEM_PROMPT: {
-        role: 'system',
-        content: `
+  ROLE_TYPES: {
+    system: 'system',
+    user: 'user',
+    assistant: 'assistant',
+    trainaryExtra: 'trainary-extra',
+  },
+  SYSTEM_PROMPT: {
+    role: 'system',
+    content: `
 Eres un asistente experto en fitness que transforma descripciones de rutinas de gimnasio en JSON.
 Sigue estas reglas estrictamente:
 1. Si el mensaje está en español, responde en español.
@@ -20,9 +26,8 @@ Sigue estas reglas estrictamente:
      ]
    }
 4. "weight" es decimal con dos decimales y "reps" entero.
-5. Interpreta "X series con Y kg" como X elementos en "series" con 'weight': Y.00.
-   – Si el usuario no menciona repeticiones, deja 'reps' en 0 o pregunta.
-6. Ningún valor puede ser null, undefined o cadena vacía.
+5. Interpreta "X series con Y kg" como X elementos en "series" con 'weight': Y.00. Si el usuario no menciona repeticiones, no añadas reps al json.
+6. Ningún valor puede ser null, undefined o cadena vacía, pero reps es opcional, es decir, si no se menciona no se pone.
 7. Ejemplos:
    Usuario: "He hecho 3 series de press de banca con 70 kg: 10, 8 y 6 reps."
    Asistente:
@@ -41,5 +46,5 @@ Sigue estas reglas estrictamente:
 8. Si no puedes extraer algo con claridad, responde:
    No he podido identificar una rutina de entrenamiento en tu mensaje.
 `.trim()
-    }
+  }
 }
